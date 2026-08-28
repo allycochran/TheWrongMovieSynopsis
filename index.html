@@ -383,6 +383,37 @@
       box-shadow: 4px 4px 0 var(--ink);
     }
 
+    .share-btn {
+      border: 3px solid var(--ink);
+      background: var(--purple);
+      color: white;
+      padding: 15px 28px;
+      border-radius: 15px;
+      font: inherit;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 var(--ink);
+      margin-left: 8px;
+    }
+
+    .share-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+
+    .share-results {
+      margin: 22px auto;
+      padding: 18px;
+      max-width: 390px;
+      background: #f3efff;
+      border: 2px dashed var(--purple);
+      border-radius: 18px;
+      font-size: 20px;
+      letter-spacing: 4px;
+      line-height: 1.8;
+      font-weight: 900;
+    }
+
     @keyframes pop {
       0% { transform: scale(.95); }
       60% { transform: scale(1.04); }
@@ -467,7 +498,7 @@
 
       <p class="intro">
         Three suspiciously similar movie summaries. Two are real.
-        One was cooked up by us with absolutely no respect for cinema.
+        One was cooked up by an AI with absolutely no respect for cinema.
         <strong>Find the fake.</strong>
       </p>
     </section>
@@ -523,10 +554,16 @@
 
       <p id="finalMessage"></p>
 
+      <div class="share-results" id="shareResults"></div>
+
       <br>
 
       <button class="restart" onclick="restartGame()">
         Play Again ↻
+      </button>
+
+      <button class="share-btn" onclick="shareResults()">
+        📋 Share Results
       </button>
     </section>
 
@@ -630,6 +667,7 @@
     let score = 0;
     let streak = 0;
     let answered = false;
+    let userAnswers = [];
 
     const choicesEl = document.getElementById("choices");
     const resultEl = document.getElementById("result");
@@ -688,6 +726,8 @@
       answered = true;
 
       const q = questions[current];
+
+      userAnswers[current] = index;
 
       const buttons = document.querySelectorAll(".choice");
 
@@ -762,16 +802,42 @@
       let message;
 
       if (score === 5) {
-        message = "You are either a movie expert or frighteningly good at detecting nonsense.";
+        message = "You are either a movie expert or frighteningly good at detecting AI nonsense.";
       } else if (score >= 3) {
         message = "Pretty solid. Hollywood would probably let you write a synopsis.";
       } else {
-        message = "We have defeated you. Respectfully, it is time to watch more movies.";
+        message = "The AI has defeated you. Respectfully, it is time to watch more movies.";
       }
 
       document.getElementById("finalMessage").textContent = message;
 
+      const emojiResults = questions.map((q, i) => {
+        return userAnswers[i] === q.correct ? "🟩" : "🟥";
+      }).join("");
+
+      document.getElementById("shareResults").textContent = emojiResults;
+
       confetti();
+    }
+
+    function shareResults() {
+
+      const emojiResults = questions.map((q, i) => {
+        return userAnswers[i] === q.correct ? "🟩" : "🟥";
+      }).join("");
+
+      const shareText = `🎬 The Wrong Synopsis\n${emojiResults}\n⭐ ${score}/5\n\nCan you beat me?`;
+
+      navigator.clipboard.writeText(shareText).then(() => {
+        const button = document.querySelector(".share-btn");
+        button.textContent = "✓ Copied!";
+
+        setTimeout(() => {
+          button.textContent = "📋 Share Results";
+        }, 1800);
+      }).catch(() => {
+        alert(shareText);
+      });
     }
 
     function restartGame() {
@@ -779,6 +845,7 @@
       current = 0;
       score = 0;
       streak = 0;
+      userAnswers = [];
 
       document.getElementById("score").textContent = "0";
       document.getElementById("streak").textContent = "0";
