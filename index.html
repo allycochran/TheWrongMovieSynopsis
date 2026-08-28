@@ -1,4 +1,4 @@
-version 0.08
+version 0.09
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,6 +85,21 @@ version 0.08
       max-width: 900px;
       margin: auto;
       padding: 50px 24px 80px;
+    }
+
+    footer {
+      max-width: 900px;
+      margin: -35px auto 0;
+      padding: 0 24px 30px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      opacity: .65;
+    }
+
+    footer span {
+      margin-left: 8px;
+      opacity: .7;
     }
 
     .hero {
@@ -497,8 +512,8 @@ version 0.08
       </h1>
 
       <p class="intro">
-        Three movie summaries. Two are real.
-        One was made up.
+        Three suspiciously similar movie summaries. Two are real.
+        One was cooked up by an AI with absolutely no respect for cinema.
         <strong>Find the fake.</strong>
       </p>
     </section>
@@ -569,6 +584,10 @@ version 0.08
 
   </main>
 
+  <footer>
+    Made by Ally Cochran <span>• Version 0.08</span>
+  </footer>
+
   <script>
 
     /*
@@ -589,76 +608,76 @@ version 0.08
     const questions = [
       {
         choices: [
-          "After the world ends, a father and his young son trek through a dead, ash-covered America.",
+          "A grieving father crosses a dangerous landscape after his son disappears, following a trail of clues that slowly reveals a conspiracy much larger than his family.",
           "A teenager discovers that his new neighbor is secretly a retired astronaut who has been communicating with a mysterious satellite using Morse code.",
-          "Astronauts investigate a mysterious alien object in space, while their suspiciously emotional computer starts acting weird."
+          "A former detective reluctantly returns to his hometown after a series of seemingly unrelated murders begin recreating the cases that ended his career."
         ],
         correct: 1,
         explanation: "The satellite-communicating retired astronaut is our fake. The other two are real movie premises.",
         movies: [
           "The Road",
           "Fake Synopsis",
-          "2001: A Space Odyssey"
+          "The Town"
         ]
       },
 
       {
         choices: [
-          "A man discovers that the people around him are actors hired to make his ordinary life appear normal.",
-          "A bored photographer spies on his neighbors and becomes convinced he’s witnessed a murder.",
-          "A woman inherits a haunted lighthouse where the ghosts can only communicate by rearranging the furniture into increasingly elaborate configurations."
+          "A lonely office worker discovers that the people around him are actors hired to make his ordinary life appear normal.",
+          "Two strangers wake up in a strange room and realize they have been trapped there by someone who knows intimate details about both of their lives.",
+          "A woman inherits a haunted lighthouse where the ghosts can only communicate by rearranging the furniture into increasingly elaborate IKEA configurations."
         ],
         correct: 2,
-        explanation: "Sadly, no haunted furniture lighthouse. That one is the fake.",
+        explanation: "Sadly, no haunted IKEA lighthouse. That one is the fake.",
         movies: [
           "The Truman Show",
-          "Rear Window",
+          "Cube",
           "Fake Synopsis"
         ]
       },
 
       {
         choices: [
-          "A family travels to an island for a vacation, only to discover that time behaves differently there.",
-          "A doll leaves her perfect world for the real world after a crisis sends her life off the rails.",
+          "A group of friends travel to a remote island for a luxurious vacation, only to discover that time behaves differently there.",
+          "A scientist becomes obsessed with a series of identical photographs that appear to predict disasters before they happen.",
           "A struggling magician opens a bakery where every pastry contains a tiny prophecy about the customer's future."
         ],
         correct: 2,
         explanation: "The prophetic pastry bakery is the fake. Delicious concept. Completely invented.",
         movies: [
           "Old",
-          "Barbie",
+          "The Butterfly Effect",
           "Fake Synopsis"
         ]
       },
 
       {
         choices: [
-          "A stressed laundromat owner discovers she’s the only person who can save the multiverse from a nihilistic menace.",
-          "A teenage boy starts a waterbed business with his older crush.",
+          "A young woman returns to her childhood home after her mother's death and discovers a hidden room containing evidence that her family has been lying to her for decades.",
+          "A journalist investigates a mysterious disappearance after receiving a package containing a single photograph and a key.",
           "A man wakes up every morning as a different species of animal and must solve a murder before he permanently becomes a goose."
         ],
         correct: 2,
         explanation: "The murder-solving goose is the impostor. Honk.",
         movies: [
-          "Everything Everywhere All at Once",
-          "Licorice Pizza",
+          "The Others",
+          "The Gift",
           "Fake Synopsis"
         ]
       },
 
       {
         choices: [
-          "A professional thief assembles a team to plant an idea inside a billionaire's dreams while he sleeps",
+          "A professional thief assembles a team to steal information from a person's subconscious while they sleep.",
           "A woman discovers that she can hear the private thoughts of anyone who touches the same elevator button as her.",
-          "A cat survives a massive flood by joining forces with a boatload of animals"
+          "A family moves into an apparently perfect suburban house and slowly realizes that their new neighborhood is hiding something sinister."
         ],
         correct: 1,
         explanation: "The elevator-button mind reader is the fake. The other two are real movie premises.",
         movies: [
           "Inception",
           "Fake Synopsis",
-          "Flow"
+          "The Stepford Wives"
         ]
       }
     ];
@@ -802,11 +821,11 @@ version 0.08
       let message;
 
       if (score === 5) {
-        message = "You are either a movie expert or frighteningly good at detecting nonsense.";
+        message = "You are either a movie expert or frighteningly good at detecting AI nonsense.";
       } else if (score >= 3) {
         message = "Pretty solid. Hollywood would probably let you write a synopsis.";
       } else {
-        message = "We have defeated you. Respectfully, it is time to watch more movies.";
+        message = "The AI has defeated you. Respectfully, it is time to watch more movies.";
       }
 
       document.getElementById("finalMessage").textContent = message;
@@ -915,4 +934,4 @@ version 0.08
 
 </body>
 </html>
-```
+
