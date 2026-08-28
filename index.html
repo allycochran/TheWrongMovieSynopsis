@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -262,6 +262,37 @@
       margin-bottom: 4px;
     }
 
+    .movie-reveal {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 2px dashed var(--ink);
+    }
+
+    .movie-reveal-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      color: var(--purple);
+      font-weight: 950;
+    }
+
+    .movie-list {
+      display: grid;
+      gap: 5px;
+      font-weight: 700;
+    }
+
+    .movie-list div {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .movie-list .fake-movie {
+      color: var(--pink);
+    }
+
     .next-btn {
       display: none;
       width: 100%;
@@ -463,6 +494,10 @@
         <div class="result" id="result">
           <strong id="resultTitle"></strong>
           <span id="resultText"></span>
+          <div class="movie-reveal">
+            <div class="movie-reveal-title">🎬 The movies</div>
+            <div class="movie-list" id="movieList"></div>
+          </div>
         </div>
 
         <button class="next-btn" id="nextBtn">
@@ -522,7 +557,12 @@
           "A former detective reluctantly returns to his hometown after a series of seemingly unrelated murders begin recreating the cases that ended his career."
         ],
         correct: 1,
-        explanation: "The satellite-communicating retired astronaut is our fake. The other two are real movie premises."
+        explanation: "The satellite-communicating retired astronaut is our fake. The other two are real movie premises.",
+        movies: [
+          "Real Movie #1",
+          "Fake Synopsis",
+          "Real Movie #2"
+        ]
       },
 
       {
@@ -532,7 +572,12 @@
           "A woman inherits a haunted lighthouse where the ghosts can only communicate by rearranging the furniture into increasingly elaborate IKEA configurations."
         ],
         correct: 2,
-        explanation: "Sadly, no haunted IKEA lighthouse. That one is AI nonsense."
+        explanation: "Sadly, no haunted IKEA lighthouse. That one is the fake.",
+        movies: [
+          "Real Movie #1",
+          "Real Movie #2",
+          "Fake Synopsis"
+        ]
       },
 
       {
@@ -542,7 +587,12 @@
           "A struggling magician opens a bakery where every pastry contains a tiny prophecy about the customer's future."
         ],
         correct: 2,
-        explanation: "The prophetic pastry bakery is the fake. Delicious concept. Completely invented."
+        explanation: "The prophetic pastry bakery is the fake. Delicious concept. Completely invented.",
+        movies: [
+          "Real Movie #1",
+          "Real Movie #2",
+          "Fake Synopsis"
+        ]
       },
 
       {
@@ -552,7 +602,12 @@
           "A man wakes up every morning as a different species of animal and must solve a murder before he permanently becomes a goose."
         ],
         correct: 2,
-        explanation: "The murder-solving goose is the impostor. Honk."
+        explanation: "The murder-solving goose is the impostor. Honk.",
+        movies: [
+          "Real Movie #1",
+          "Real Movie #2",
+          "Fake Synopsis"
+        ]
       },
 
       {
@@ -562,7 +617,12 @@
           "A family moves into an apparently perfect suburban house and slowly realizes that their new neighborhood is hiding something sinister."
         ],
         correct: 1,
-        explanation: "The elevator-button mind reader is the fake. The other two are real movie premises."
+        explanation: "The elevator-button mind reader is the fake. The other two are real movie premises.",
+        movies: [
+          "Real Movie #1",
+          "Fake Synopsis",
+          "Real Movie #2"
+        ]
       }
     ];
 
@@ -662,6 +722,13 @@
       document.getElementById("streak").textContent = streak;
 
       resultText.textContent += " " + q.explanation;
+
+      document.getElementById("movieList").innerHTML = q.movies.map((movie, i) => `
+        <div class="${i === q.correct ? "fake-movie" : ""}">
+          <span>${String.fromCharCode(65 + i)}</span>
+          <span>${movie}</span>
+        </div>
+      `).join("");
 
       resultEl.classList.add("show");
       nextBtn.classList.add("show");
