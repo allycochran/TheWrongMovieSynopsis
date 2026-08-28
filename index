@@ -1,0 +1,784 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Wrong Synopsis</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ink: #191528;
+      --cream: #fff9ef;
+      --purple: #7357ff;
+      --pink: #ff5c9a;
+      --yellow: #ffd84d;
+      --blue: #5bd7ff;
+      --green: #55d98c;
+      --red: #ff6868;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255,216,77,.55), transparent 25%),
+        radial-gradient(circle at 90% 20%, rgba(91,215,255,.45), transparent 25%),
+        radial-gradient(circle at 80% 90%, rgba(255,92,154,.35), transparent 25%),
+        var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .25;
+      background-image:
+        radial-gradient(#7357ff 1px, transparent 1px);
+      background-size: 24px 24px;
+      z-index: -1;
+    }
+
+    header {
+      max-width: 1100px;
+      margin: auto;
+      padding: 28px 24px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-weight: 950;
+      font-size: 20px;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: var(--purple);
+    }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+    }
+
+    .stat {
+      background: white;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      padding: 8px 15px;
+      font-weight: 800;
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 50px 24px 80px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: var(--yellow);
+      border: 2px solid var(--ink);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+      transform: rotate(-2deg);
+      box-shadow: 3px 3px 0 var(--ink);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(52px, 10vw, 92px);
+      line-height: .88;
+      letter-spacing: -6px;
+      font-weight: 1000;
+    }
+
+    h1 span {
+      color: var(--pink);
+      display: block;
+      transform: rotate(-2deg);
+      text-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .intro {
+      max-width: 600px;
+      margin: 25px auto 0;
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    .game-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 30px 0 14px;
+      font-weight: 900;
+    }
+
+    .progress {
+      height: 13px;
+      border: 2px solid var(--ink);
+      background: white;
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: 3px 3px 0 var(--ink);
+      margin-bottom: 30px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 33%;
+      background: linear-gradient(90deg, var(--purple), var(--pink));
+      transition: width .4s ease;
+    }
+
+    .question-card {
+      background: white;
+      border: 3px solid var(--ink);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 8px 8px 0 var(--ink);
+    }
+
+    .question-number {
+      font-size: 13px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--purple);
+      margin-bottom: 7px;
+    }
+
+    h2 {
+      font-size: clamp(25px, 5vw, 38px);
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
+    }
+
+    .choices {
+      display: grid;
+      gap: 15px;
+    }
+
+    .choice {
+      width: 100%;
+      text-align: left;
+      border: 3px solid var(--ink);
+      background: #fffdf8;
+      border-radius: 20px;
+      padding: 21px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1.5;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .choice:hover:not(:disabled) {
+      transform: translate(-3px, -3px) rotate(-.5deg);
+      box-shadow: 7px 7px 0 var(--ink);
+      background: #f3efff;
+    }
+
+    .choice:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .choice-label {
+      display: inline-flex;
+      width: 34px;
+      height: 34px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--yellow);
+      border: 2px solid var(--ink);
+      margin-right: 10px;
+      font-weight: 950;
+      vertical-align: middle;
+    }
+
+    .choice.correct {
+      background: var(--green);
+      animation: pop .35s ease;
+    }
+
+    .choice.wrong {
+      background: var(--red);
+      animation: shake .4s ease;
+    }
+
+    .choice.reveal {
+      background: #e8e4ff;
+    }
+
+    .choice:disabled {
+      cursor: default;
+    }
+
+    .result {
+      display: none;
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: 18px;
+      border: 3px solid var(--ink);
+      background: var(--yellow);
+      font-weight: 800;
+      line-height: 1.5;
+      animation: slideUp .3s ease;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .result strong {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .next-btn {
+      display: none;
+      width: 100%;
+      margin-top: 17px;
+      border: 3px solid var(--ink);
+      background: var(--purple);
+      color: white;
+      border-radius: 18px;
+      padding: 17px;
+      font: inherit;
+      font-weight: 950;
+      font-size: 17px;
+      cursor: pointer;
+      box-shadow: 5px 5px 0 var(--ink);
+      transition: .15s ease;
+    }
+
+    .next-btn.show {
+      display: block;
+    }
+
+    .next-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0 var(--ink);
+    }
+
+    .instructions {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 14px;
+      font-weight: 700;
+      opacity: .7;
+    }
+
+    .floating {
+      position: fixed;
+      font-size: 30px;
+      pointer-events: none;
+      animation: float 7s infinite ease-in-out;
+      z-index: -1;
+    }
+
+    .f1 { top: 25%; left: 5%; }
+    .f2 { top: 65%; right: 6%; animation-delay: 1s; }
+    .f3 { top: 12%; right: 14%; animation-delay: 2s; }
+    .f4 { bottom: 8%; left: 12%; animation-delay: 3s; }
+
+    .final {
+      display: none;
+      text-align: center;
+      background: white;
+      border: 3px solid var(--ink);
+      border-radius: 28px;
+      padding: 45px 25px;
+      box-shadow: 8px 8px 0 var(--ink);
+    }
+
+    .final.show {
+      display: block;
+      animation: pop .4s ease;
+    }
+
+    .final-emoji {
+      font-size: 65px;
+    }
+
+    .final h2 {
+      font-size: 42px;
+      margin: 10px 0;
+    }
+
+    .final-score {
+      font-size: 65px;
+      font-weight: 1000;
+      color: var(--pink);
+      text-shadow: 3px 3px 0 var(--ink);
+      margin: 15px 0;
+    }
+
+    .restart {
+      border: 3px solid var(--ink);
+      background: var(--yellow);
+      padding: 15px 28px;
+      border-radius: 15px;
+      font: inherit;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    @keyframes pop {
+      0% { transform: scale(.95); }
+      60% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-7px); }
+      75% { transform: translateX(7px); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0) rotate(-8deg); }
+      50% { transform: translateY(-25px) rotate(8deg); }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 18px;
+      }
+
+      .stat {
+        padding: 7px 11px;
+        font-size: 13px;
+      }
+
+      main {
+        padding: 35px 16px 60px;
+      }
+
+      h1 {
+        letter-spacing: -4px;
+      }
+
+      .question-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      .choice {
+        padding: 17px;
+      }
+
+      .floating {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="floating f1">🎬</div>
+  <div class="floating f2">🍿</div>
+  <div class="floating f3">⭐</div>
+  <div class="floating f4">🎞️</div>
+
+  <header>
+    <div class="logo">THE <span>WRONG</span> SYNOPSIS</div>
+
+    <div class="stats">
+      <div class="stat">🔥 Streak: <span id="streak">0</span></div>
+      <div class="stat">⭐ Score: <span id="score">0</span></div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="eyebrow">🎥 TODAY'S MOVIE GAME</div>
+
+      <h1>
+        The Wrong
+        <span>Synopsis.</span>
+      </h1>
+
+      <p class="intro">
+        Three suspiciously similar movie summaries. Two are real.
+        One was cooked up by an AI with absolutely no respect for cinema.
+        <strong>Find the fake.</strong>
+      </p>
+    </section>
+
+    <div id="game">
+
+      <div class="game-meta">
+        <span>ROUND <span id="round">1</span> / 5</span>
+        <span id="progressText">20% complete</span>
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <section class="question-card">
+
+        <div class="question-number">Your mission</div>
+
+        <h2>Which synopsis is completely made up?</h2>
+
+        <div class="choices" id="choices"></div>
+
+        <div class="result" id="result">
+          <strong id="resultTitle"></strong>
+          <span id="resultText"></span>
+        </div>
+
+        <button class="next-btn" id="nextBtn">
+          Next movie →
+        </button>
+
+      </section>
+
+      <p class="instructions">
+        Pick the synopsis you think is fake. No Googling. We can tell.
+      </p>
+
+    </div>
+
+    <section class="final" id="final">
+      <div class="final-emoji">🍿</div>
+      <h2>That's a wrap!</h2>
+      <p>You survived another round of suspicious cinema.</p>
+
+      <div class="final-score">
+        <span id="finalScore">0</span> / 5
+      </div>
+
+      <p id="finalMessage"></p>
+
+      <br>
+
+      <button class="restart" onclick="restartGame()">
+        Play Again ↻
+      </button>
+    </section>
+
+  </main>
+
+  <script>
+
+    /*
+      ==========================================
+      THE WRONG SYNOPSIS
+      ==========================================
+
+      Replace these examples with your own daily
+      movie questions.
+
+      Each round needs:
+      - question
+      - choices
+      - correct (0, 1, or 2)
+      - explanation
+    */
+
+    const questions = [
+      {
+        choices: [
+          "A grieving father crosses a dangerous landscape after his son disappears, following a trail of clues that slowly reveals a conspiracy much larger than his family.",
+          "A teenager discovers that his new neighbor is secretly a retired astronaut who has been communicating with a mysterious satellite using Morse code.",
+          "A former detective reluctantly returns to his hometown after a series of seemingly unrelated murders begin recreating the cases that ended his career."
+        ],
+        correct: 1,
+        explanation: "The satellite-communicating retired astronaut is our fake. The other two are real movie premises."
+      },
+
+      {
+        choices: [
+          "A lonely office worker discovers that the people around him are actors hired to make his ordinary life appear normal.",
+          "Two strangers wake up in a strange room and realize they have been trapped there by someone who knows intimate details about both of their lives.",
+          "A woman inherits a haunted lighthouse where the ghosts can only communicate by rearranging the furniture into increasingly elaborate IKEA configurations."
+        ],
+        correct: 2,
+        explanation: "Sadly, no haunted IKEA lighthouse. That one is AI nonsense."
+      },
+
+      {
+        choices: [
+          "A group of friends travel to a remote island for a luxurious vacation, only to discover that time behaves differently there.",
+          "A scientist becomes obsessed with a series of identical photographs that appear to predict disasters before they happen.",
+          "A struggling magician opens a bakery where every pastry contains a tiny prophecy about the customer's future."
+        ],
+        correct: 2,
+        explanation: "The prophetic pastry bakery is the fake. Delicious concept. Completely invented."
+      },
+
+      {
+        choices: [
+          "A young woman returns to her childhood home after her mother's death and discovers a hidden room containing evidence that her family has been lying to her for decades.",
+          "A journalist investigates a mysterious disappearance after receiving a package containing a single photograph and a key.",
+          "A man wakes up every morning as a different species of animal and must solve a murder before he permanently becomes a goose."
+        ],
+        correct: 2,
+        explanation: "The murder-solving goose is the impostor. Honk."
+      },
+
+      {
+        choices: [
+          "A professional thief assembles a team to steal information from a person's subconscious while they sleep.",
+          "A woman discovers that she can hear the private thoughts of anyone who touches the same elevator button as her.",
+          "A family moves into an apparently perfect suburban house and slowly realizes that their new neighborhood is hiding something sinister."
+        ],
+        correct: 1,
+        explanation: "The elevator-button mind reader is the fake. The other two are real movie premises."
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let streak = 0;
+    let answered = false;
+
+    const choicesEl = document.getElementById("choices");
+    const resultEl = document.getElementById("result");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function loadQuestion() {
+
+      answered = false;
+
+      const q = questions[current];
+
+      document.getElementById("round").textContent = current + 1;
+
+      const percent = Math.round(((current + 1) / questions.length) * 100);
+
+      document.getElementById("progressText").textContent =
+        percent + "% complete";
+
+      document.getElementById("progressBar").style.width =
+        percent + "%";
+
+      choicesEl.innerHTML = "";
+
+      q.choices.forEach((choice, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "choice";
+
+        button.innerHTML = `
+          <span class="choice-label">${String.fromCharCode(65 + index)}</span>
+          ${choice}
+        `;
+
+        button.onclick = () => chooseAnswer(index, button);
+
+        choicesEl.appendChild(button);
+      });
+
+      resultEl.classList.remove("show");
+      nextBtn.classList.remove("show");
+
+      if (current === questions.length - 1) {
+        nextBtn.textContent = "See my score →";
+      } else {
+        nextBtn.textContent = "Next movie →";
+      }
+    }
+
+    function chooseAnswer(index, clickedButton) {
+
+      if (answered) return;
+
+      answered = true;
+
+      const q = questions[current];
+
+      const buttons = document.querySelectorAll(".choice");
+
+      buttons.forEach(button => button.disabled = true);
+
+      if (index === q.correct) {
+
+        score++;
+        streak++;
+
+        clickedButton.classList.add("correct");
+
+        resultTitle.textContent = "🎉 YOU GOT IT";
+
+        resultText.textContent =
+          "Correct! Your cinematic nonsense detector is working.";
+
+      } else {
+
+        streak = 0;
+
+        clickedButton.classList.add("wrong");
+        buttons[q.correct].classList.add("correct");
+
+        resultTitle.textContent = "💀 GOTCHA";
+
+        resultText.textContent =
+          "That one was real. The highlighted answer is the fake synopsis.";
+      }
+
+      document.getElementById("score").textContent = score;
+      document.getElementById("streak").textContent = streak;
+
+      resultText.textContent += " " + q.explanation;
+
+      resultEl.classList.add("show");
+      nextBtn.classList.add("show");
+
+      if (index === q.correct) {
+        confetti();
+      }
+    }
+
+    nextBtn.onclick = () => {
+
+      current++;
+
+      if (current >= questions.length) {
+        showFinal();
+      } else {
+        loadQuestion();
+      }
+    };
+
+    function showFinal() {
+
+      document.getElementById("game").style.display = "none";
+
+      const final = document.getElementById("final");
+
+      final.classList.add("show");
+
+      document.getElementById("finalScore").textContent = score;
+
+      let message;
+
+      if (score === 5) {
+        message = "You are either a movie expert or frighteningly good at detecting AI nonsense.";
+      } else if (score >= 3) {
+        message = "Pretty solid. Hollywood would probably let you write a synopsis.";
+      } else {
+        message = "The AI has defeated you. Respectfully, it is time to watch more movies.";
+      }
+
+      document.getElementById("finalMessage").textContent = message;
+
+      confetti();
+    }
+
+    function restartGame() {
+
+      current = 0;
+      score = 0;
+      streak = 0;
+
+      document.getElementById("score").textContent = "0";
+      document.getElementById("streak").textContent = "0";
+
+      document.getElementById("game").style.display = "block";
+      document.getElementById("final").classList.remove("show");
+
+      loadQuestion();
+    }
+
+    /*
+      Tiny homemade confetti effect.
+      No libraries required.
+    */
+
+    function confetti() {
+
+      const symbols = ["✦", "★", "●", "◆", "✧"];
+
+      for (let i = 0; i < 18; i++) {
+
+        const piece = document.createElement("div");
+
+        piece.textContent =
+          symbols[Math.floor(Math.random() * symbols.length)];
+
+        piece.style.position = "fixed";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.top = "-20px";
+        piece.style.fontSize = (12 + Math.random() * 18) + "px";
+        piece.style.color =
+          ["#7357ff", "#ff5c9a", "#ffd84d", "#55d98c", "#5bd7ff"]
+          [Math.floor(Math.random() * 5)];
+
+        piece.style.pointerEvents = "none";
+        piece.style.zIndex = "9999";
+
+        document.body.appendChild(piece);
+
+        const duration = 900 + Math.random() * 1000;
+
+        piece.animate(
+          [
+            {
+              transform: "translateY(0) rotate(0deg)",
+              opacity: 1
+            },
+            {
+              transform:
+                `translateY(105vh) translateX(${(Math.random() - .5) * 300}px) rotate(720deg)`,
+              opacity: 0
+            }
+          ],
+          {
+            duration: duration,
+            easing: "cubic-bezier(.2,.7,.3,1)"
+          }
+        );
+
+        setTimeout(() => piece.remove(), duration);
+      }
+    }
+
+    loadQuestion();
+
+  </script>
+
+</body>
+</html>
+```
