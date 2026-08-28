@@ -1,4 +1,4 @@
-version 5
+version 6
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -498,7 +498,7 @@ version 5
 
       <p class="intro">
         Three suspiciously similar movie summaries. Two are real.
-        One was cooked up by an AI with absolutely no respect for cinema.
+        One was cooked up with absolutely no respect for cinema.
         <strong>Find the fake.</strong>
       </p>
     </section>
@@ -802,11 +802,11 @@ version 5
       let message;
 
       if (score === 5) {
-        message = "You are either a movie expert or frighteningly good at detecting AI nonsense.";
+        message = "You are either a movie expert or frighteningly good at detecting nonsense.";
       } else if (score >= 3) {
         message = "Pretty solid. Hollywood would probably let you write a synopsis.";
       } else {
-        message = "The AI has defeated you. Respectfully, it is time to watch more movies.";
+        message = "We have defeated you. Respectfully, it is time to watch more movies.";
       }
 
       document.getElementById("finalMessage").textContent = message;
